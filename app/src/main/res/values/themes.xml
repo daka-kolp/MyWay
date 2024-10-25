@@ -1,6 +1,5 @@
 <resources>
-    <style name="Theme.MyWay" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Primary brand color. -->
+    <style name="Theme.MyWay" parent="Theme.AppCompat.Light">
         <item name="colorPrimary">@color/primary</item>
         <item name="colorOnPrimary">@color/onPrimary</item>
         <item name="colorPrimaryContainer">@color/primaryContainer</item>
@@ -8,5 +7,7 @@
         <item name="colorSecondaryContainer">@color/surfaceContainer</item>
         <item name="android:textColor">@color/primaryText</item>
         <item name="android:textColorHint">@color/secondaryText</item>
+        <item name="android:fontFamily">@font/dm_sans_regular</item>
+        <item name="fontFamily">@font/dm_sans_regular</item>
     </style>
 </resources>

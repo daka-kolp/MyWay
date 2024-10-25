@@ -1,4 +1,4 @@
-package com.dkolp.myway.presentation.fragments.auth
+package com.dkolp.myway.presentation.fragments.content.home
 
 import androidx.fragment.app.viewModels
 import android.os.Bundle
@@ -10,15 +10,14 @@ import com.dkolp.myway.R
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class AuthFragment : Fragment() {
-    private val viewModel by viewModels<AuthViewModel>()
+class HomeFragment : Fragment() {
+    private val viewModel by viewModels<HomeViewModel>()
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.fragment_auth, container, false)
+        return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

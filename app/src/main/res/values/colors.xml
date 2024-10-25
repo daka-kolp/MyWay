@@ -5,7 +5,7 @@
     <color name="primaryContainer">#FFFFEAEA</color>
     <color name="surface">#FFFFFFFF</color>
     <color name="surfaceContainer">#FFF5F5F5</color>
-    <color name="rippleEffect">#55FFEAEA</color>
+    <color name="rippleEffect">#88FFEAEA</color>
     <color name="primaryText">#FF1E1E1E</color>
     <color name="secondaryText">#FF9D9D9D</color>
 </resources>

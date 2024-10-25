@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">MyWay</string>
+    <string name="sign_in_with_google">"  Sign in with Google  "</string>
+    <string name="welcome_to_myway">Welcome to MyWay App</string>
 </resources>

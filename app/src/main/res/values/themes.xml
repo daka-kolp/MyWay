@@ -5,6 +5,7 @@
         <item name="colorPrimaryContainer">@color/primaryContainer</item>
         <item name="colorSurface">@color/surface</item>
         <item name="colorSecondaryContainer">@color/surfaceContainer</item>
+        <item name="materialButtonStyle">@style/MyWayButton</item>
         <item name="android:textColor">@color/primaryText</item>
         <item name="android:textColorHint">@color/secondaryText</item>
         <item name="android:fontFamily">@font/dm_sans_regular</item>

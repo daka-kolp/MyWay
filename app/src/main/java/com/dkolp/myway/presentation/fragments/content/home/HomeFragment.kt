@@ -22,8 +22,8 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val activity = requireActivity() as OnAuthLaunch
         val logout: MaterialButton = view.findViewById(R.id.logout)
+        val activity = requireActivity() as OnAuthLaunch
         logout.setOnClickListener { activity.logout() }
     }
 }

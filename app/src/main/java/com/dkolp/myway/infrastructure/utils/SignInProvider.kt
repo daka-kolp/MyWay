@@ -10,15 +10,14 @@ import io.github.jan.supabase.auth.SignOutScope
 import io.github.jan.supabase.auth.auth
 import io.github.jan.supabase.auth.providers.Google
 import io.github.jan.supabase.auth.providers.builtin.IDToken
-import io.github.jan.supabase.auth.user.UserInfo
+import io.github.jan.supabase.auth.status.SessionStatus
+import kotlinx.coroutines.flow.StateFlow
 import java.security.MessageDigest
 import java.util.UUID
 import javax.inject.Inject
 
 class SignInProvider @Inject constructor(private val supabase: SupabaseClient) {
-    fun getAccount(): UserInfo? {
-        return supabase.auth.currentUserOrNull()
-    }
+    val sessionStatusFlow: StateFlow<SessionStatus> = supabase.auth.sessionStatus
 
     suspend fun login(context: Context) {
         val credentialManager = CredentialManager.create(context)

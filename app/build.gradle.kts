@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     id("org.jetbrains.kotlin.kapt")
     id("com.google.dagger.hilt.android")
+    kotlin("plugin.serialization") version "1.9.10"
 }
 
 android {
@@ -48,4 +49,15 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     implementation(libs.hilt.android)
     kapt (libs.hilt.compiler)
+    implementation(libs.androidx.credentials)
+    implementation (libs.googleid)
+    implementation(libs.androidx.credentials.play.services.auth)
+    implementation(platform(libs.bom))
+    implementation(libs.postgrest.kt)
+    implementation(libs.auth.kt)
+    implementation(libs.realtime.kt)
+    implementation(libs.ktor.client.android)
+    implementation(libs.androidx.credentials)
+    implementation (libs.googleid)
+    implementation(libs.androidx.credentials.play.services.auth)
 }

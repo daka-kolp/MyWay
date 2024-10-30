@@ -1,9 +1,13 @@
 package com.dkolp.myway.infrastructure.di
 
+import android.content.Context
 import com.dkolp.myway.infrastructure.utils.SignInProvider
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.auth.Auth
@@ -28,5 +32,11 @@ class MyWayAppModule {
     @Provides
     fun getSignInProvider(supabaseClient: SupabaseClient): SignInProvider {
         return SignInProvider(supabaseClient)
+    }
+
+    @Singleton
+    @Provides
+    fun getLocationProviderClient(@ApplicationContext context: Context): FusedLocationProviderClient {
+        return LocationServices.getFusedLocationProviderClient(context)
     }
 }

@@ -2,4 +2,5 @@
     <string name="app_name">MyWay</string>
     <string name="sign_in_with_google">"  Sign in with Google  "</string>
     <string name="welcome_to_myway">Welcome to MyWay App</string>
+    <string name="we_can_not_define_your_location">We can not define your location</string>
 </resources>

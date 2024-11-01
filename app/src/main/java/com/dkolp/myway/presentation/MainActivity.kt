@@ -1,6 +1,10 @@
 package com.dkolp.myway.presentation
 
+import android.graphics.Rect
 import android.os.Bundle
+import android.view.MotionEvent
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -77,5 +81,21 @@ class MainActivity : AppCompatActivity(), OnAuthLaunch {
 
     private fun showError(error: AuthViewModel.UIAuthState.Error) {
         Toast.makeText(this, "Error: ${error.message}", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun dispatchTouchEvent(event: MotionEvent?): Boolean {
+        if (event?.action == MotionEvent.ACTION_DOWN) {
+            val focusedView = currentFocus
+            if (focusedView is EditText) {
+                val outRect = Rect()
+                focusedView.getGlobalVisibleRect(outRect)
+                if (!outRect.contains(event.rawX.toInt(), event.rawY.toInt())) {
+                    focusedView.clearFocus()
+                    val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+                    imm.hideSoftInputFromWindow(focusedView.getWindowToken(), 0)
+                }
+            }
+        }
+        return super.dispatchTouchEvent(event)
     }
 }

@@ -4,7 +4,7 @@
         <item name="colorOnPrimary">@color/onPrimary</item>
         <item name="colorPrimaryContainer">@color/primaryContainer</item>
         <item name="colorSurface">@color/surface</item>
-        <item name="colorSecondaryContainer">@color/surfaceContainer</item>
+        <item name="colorAccent">@color/primary</item>
         <item name="materialButtonStyle">@style/MyWayButton</item>
         <item name="android:textColor">@color/primaryText</item>
         <item name="android:textColorHint">@color/secondaryText</item>

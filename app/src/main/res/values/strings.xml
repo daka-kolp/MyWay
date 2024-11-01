@@ -3,4 +3,7 @@
     <string name="sign_in_with_google">"  Sign in with Google  "</string>
     <string name="welcome_to_myway">Welcome to MyWay App</string>
     <string name="we_can_not_define_your_location">We can not define your location</string>
+    <string name="save_address">Save address</string>
+    <string name="your_location">Your Location</string>
+    <string name="select_location">Select Location</string>
 </resources>

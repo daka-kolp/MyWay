@@ -23,7 +23,7 @@ class AuthFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val signInButton: MaterialButton = view.findViewById(R.id.sign_in_button)
+        val signInButton = view.findViewById<MaterialButton>(R.id.sign_in_button)
         val activity = requireActivity() as OnAuthLaunch
         signInButton.setOnClickListener { activity.login() }
     }

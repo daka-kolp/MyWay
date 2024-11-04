@@ -33,7 +33,7 @@
         <item name="ensureMinTouchTargetSize">false</item>
         <item name="chipStartPadding">16dp</item>
         <item name="chipEndPadding">16dp</item>
-
         <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.MaterialComponents.Chip</item>
+        <item name="android:textAppearance">@font/dm_sans_regular</item>
     </style>
 </resources>

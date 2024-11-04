@@ -24,4 +24,16 @@
         <item name="android:paddingTop">28dp</item>
         <item name="android:paddingBottom">12dp</item>
     </style>
+
+    <style name="MyWayChipStyle" parent="Widget.MaterialComponents.Chip.Choice">
+        <item name="background">@drawable/chip_color</item>
+        <item name="android:textColor">@color/primaryText</item>
+        <item name="chipCornerRadius">2dp</item>
+        <item name="android:textSize">14sp</item>
+        <item name="ensureMinTouchTargetSize">false</item>
+        <item name="chipStartPadding">16dp</item>
+        <item name="chipEndPadding">16dp</item>
+
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.MaterialComponents.Chip</item>
+    </style>
 </resources>

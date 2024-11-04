@@ -19,7 +19,7 @@
 
     <Space
         android:layout_width="wrap_content"
-        android:layout_height="20dp" />
+        android:layout_height="8dp" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/address_input_layout"
@@ -43,25 +43,33 @@
         android:id="@+id/chipGroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:chipSpacingVertical="8dp"
         app:singleSelection="true">
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chip_home"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/home" />
+            android:layout_width="148dp"
+            android:layout_height="50dp"
+            android:text="@string/home"
+            app:chipIcon="@drawable/home_ic"
+            app:chipIconEnabled="true" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chip_office"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/office" />
+            android:layout_width="148dp"
+            android:layout_height="50dp"
+            android:text="@string/office"
+            app:chipIcon="@drawable/office_ic"
+            app:chipIconEnabled="true" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chip_others"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/others" />
+            android:layout_width="148dp"
+            android:layout_height="50dp"
+            android:text="@string/others"
+            app:chipIcon="@drawable/others_ic"
+
+            app:chipIconEnabled="true" />
     </com.google.android.material.chip.ChipGroup>
 
     <Space

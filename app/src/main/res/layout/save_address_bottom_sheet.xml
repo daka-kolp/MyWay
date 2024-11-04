@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/my_way_bottom_sheet_shape"
@@ -29,9 +30,39 @@
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/address_input"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:maxLines="1" />
 
     </com.google.android.material.textfield.TextInputLayout>
+
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="20dp" />
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chipGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:singleSelection="true">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_home"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/home" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_office"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/office" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_others"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/others" />
+    </com.google.android.material.chip.ChipGroup>
 
     <Space
         android:layout_width="wrap_content"

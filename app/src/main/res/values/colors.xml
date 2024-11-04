@@ -3,6 +3,7 @@
     <color name="primary">#FFC91C1C</color>
     <color name="onPrimary">#FFFFFFFF</color>
     <color name="primaryContainer">#FFFFEAEA</color>
+    <color name="accent">#FFC91C1C</color>
     <color name="surface">#FFFFFFFF</color>
     <color name="surfaceContainer">#FFF5F5F5</color>
     <color name="rippleEffect">#88FFEAEA</color>

@@ -1,9 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:ns2="http://schemas.android.com/apk/res-auto">
     <style name="MyWayButton" parent="android:Widget.Button">
         <item name="android:textSize">18sp</item>
         <item name="android:padding">20dp</item>
         <item name="android:textColor">@color/onPrimary</item>
         <item name="android:background">@drawable/my_way_button_shape</item>
+    </style>
+
+    <style name="MyWayInputStyle" parent="@style/Widget.MaterialComponents.TextInputLayout.FilledBox">
+        <item name="materialThemeOverlay">@style/MyWayThemeOverlay</item>
+        <item name="boxBackgroundColor">@android:color/transparent</item>
+    </style>
+
+    <style name="MyWayThemeOverlay">
+        <item name="editTextStyle">@style/MyWayEditTextStyle</item>
+    </style>
+
+    <style name="MyWayEditTextStyle" parent="@style/Widget.MaterialComponents.TextInputEditText.FilledBox">
+        <item name="android:paddingLeft">2dp</item>
+        <item name="android:paddingRight">2dp</item>
+        <item name="android:paddingStart" ns2:ignore="NewApi">2dp</item>
+        <item name="android:paddingEnd" ns2:ignore="NewApi">2dp</item>
+        <item name="android:paddingTop">28dp</item>
+        <item name="android:paddingBottom">12dp</item>
     </style>
 </resources>

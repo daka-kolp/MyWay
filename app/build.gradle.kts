@@ -63,4 +63,8 @@ dependencies {
     implementation (libs.googleid)
     implementation(libs.androidx.credentials.play.services.auth)
     implementation(libs.androidx.core.splashscreen)
+    implementation(libs.retrofit)
+    implementation(libs.adapter.rxjava2)
+    implementation(libs.converter.gson)
+    implementation(libs.gson)
 }

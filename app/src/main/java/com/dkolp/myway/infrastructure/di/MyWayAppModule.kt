@@ -1,6 +1,9 @@
 package com.dkolp.myway.infrastructure.di
 
 import android.content.Context
+import com.dkolp.myway.core.data.GoogleMapRepository
+import com.dkolp.myway.core.data.api.GoogleApiClient
+import com.dkolp.myway.core.domain.MapRepository
 import com.dkolp.myway.infrastructure.utils.SignInProvider
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -39,4 +42,12 @@ class MyWayAppModule {
     fun getLocationProviderClient(@ApplicationContext context: Context): FusedLocationProviderClient {
         return LocationServices.getFusedLocationProviderClient(context)
     }
+
+    @Provides
+    @Singleton
+    fun getApiClient(): GoogleApiClient = GoogleApiClient()
+
+    @Provides
+    @Singleton
+    fun getMapRepository(client: GoogleApiClient): MapRepository = GoogleMapRepository(client)
 }

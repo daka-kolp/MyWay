@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.location.Location
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +14,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.dkolp.myway.R
+import com.dkolp.myway.core.domain.entities.Geolocation
+import com.dkolp.myway.core.domain.entities.Place
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -27,6 +30,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class HomeFragment : Fragment(), OnMapReadyCallback {
     private val locationVM by viewModels<CurrentLocationViewModel>()
+    private val placesVM by viewModels<PlacesViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +50,8 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
 
         val supportMapFragment = getChildFragmentManager().findFragmentById(R.id.map) as SupportMapFragment
         supportMapFragment.getMapAsync(this)
+
+        placesVM.uiPlacesState.observe(viewLifecycleOwner) { onPlacesViewUpdate(it) }
     }
 
     override fun onMapReady(map: GoogleMap) {
@@ -70,8 +76,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         when (uiState) {
             is CurrentLocationViewModel.UICurrentLocationState.Result -> onCurrentLocationFetched(uiState.location, map)
             is CurrentLocationViewModel.UICurrentLocationState.Error -> onCurrentLocationFetchedError(uiState.error)
-            is CurrentLocationViewModel.UICurrentLocationState.Empty -> Unit
-            is CurrentLocationViewModel.UICurrentLocationState.Processing -> Unit
+            else -> Unit
         }
     }
 
@@ -81,6 +86,8 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         val options = MarkerOptions().icon(getUserIcon()).position(latLng)
         map.addMarker(options)
         map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 14.5F))
+
+        placesVM.findPlaceByGeolocation(currentLocation.geolocationFromLocation())
     }
 
     private fun Location.latLngFromLocation(): LatLng {
@@ -94,7 +101,23 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         return BitmapDescriptorFactory.fromBitmap(marker)
     }
 
+    private fun Location.geolocationFromLocation(): Geolocation {
+        return Geolocation(latitude, longitude)
+    }
+
     private fun onCurrentLocationFetchedError(error: String) {
         Toast.makeText(context, "Error: $error", Toast.LENGTH_LONG).show()
+    }
+
+    private fun onPlacesViewUpdate(uiState: PlacesViewModel.UIPlacesState) {
+        when (uiState) {
+            is PlacesViewModel.UIPlacesState.Result -> onPlacesFetched(uiState.places)
+            else -> Unit
+        }
+    }
+
+    private fun onPlacesFetched(places: List<Place>) {
+        //TODO: change logic
+        Log.i("PLACES", places.toString())
     }
 }

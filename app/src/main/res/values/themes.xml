@@ -14,4 +14,10 @@
         <item name="textInputStyle">@style/MyWayInputStyle</item>
         <item name="chipStyle">@style/MyWayChipStyle</item>
     </style>
+
+    <style name="Theme.MyWay.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenAnimatedIcon">@drawable/app_icon</item>
+        <item name="windowSplashScreenBackground">@color/surface</item>
+        <item name="postSplashScreenTheme">@style/Theme.MyWay</item>
+    </style>
 </resources>

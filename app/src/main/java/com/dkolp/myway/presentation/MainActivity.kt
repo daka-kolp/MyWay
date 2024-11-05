@@ -11,6 +11,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.isVisible
 import com.dkolp.myway.R
 import com.dkolp.myway.presentation.fragments.auth.AuthFragment
@@ -38,6 +39,7 @@ class MainActivity : AppCompatActivity(), OnAuthLaunch {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        installSplashScreen()
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
 

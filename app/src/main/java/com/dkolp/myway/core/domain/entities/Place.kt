@@ -4,7 +4,5 @@ data class Place(
     val address: String,
     val geolocation: Geolocation,
 ) {
-    override fun toString(): String {
-        return "$address, ${geolocation.formatted()}"
-    }
+    override fun toString(): String { return address }
 }

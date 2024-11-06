@@ -5,10 +5,13 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.location.Location
 import android.os.Bundle
-import android.util.Log
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
@@ -25,14 +28,13 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.material.textfield.TextInputEditText
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class HomeFragment : Fragment(), OnMapReadyCallback {
     private val locationVM by viewModels<CurrentLocationViewModel>()
     private val placesVM by viewModels<PlacesViewModel>()
-    private var addressTextField: TextInputEditText? = null
+    private var addressTextField: AutoCompleteTextView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,12 +52,17 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        addressTextField = view.findViewById(R.id.address_input)
-
         val supportMapFragment = getChildFragmentManager().findFragmentById(R.id.map) as SupportMapFragment
         supportMapFragment.getMapAsync(this)
 
         placesVM.uiPlacesState.observe(viewLifecycleOwner) { onPlacesViewUpdate(it) }
+
+        addressTextField = view.findViewById(R.id.address_input)
+        addressTextField?.addTextChangedListener(object : TextWatcher {
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+            override fun afterTextChanged(s: Editable) { placesVM.findPlaceByText(s.toString()) }
+        })
     }
 
     override fun onMapReady(map: GoogleMap) {
@@ -119,8 +126,12 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun onPlacesFetched(places: List<Place>) {
-        //TODO: change logic
-        Log.i("PLACES", places.toString())
+        val suggestAdapter = context?.let { ArrayAdapter(it, android.R.layout.simple_list_item_1, places) }
+        if (suggestAdapter != null) {
+            suggestAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            addressTextField?.setAdapter(suggestAdapter)
+            suggestAdapter.notifyDataSetChanged()
+        }
     }
 
     private fun onPlaceFetched(place: Place) {

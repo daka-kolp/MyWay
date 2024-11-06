@@ -41,7 +41,7 @@
         android:layout_height="20dp" />
 
     <com.google.android.material.chip.ChipGroup
-        android:id="@+id/chipGroup"
+        android:id="@+id/place_type_chip_group"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:chipSpacingVertical="8dp"
@@ -80,6 +80,7 @@
         android:id="@+id/save_address_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:enabled="false"
         android:text="@string/save_address"
         android:textSize="18sp" />
 

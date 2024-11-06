@@ -28,13 +28,18 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.material.button.MaterialButton
+import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class HomeFragment : Fragment(), OnMapReadyCallback {
     private val locationVM by viewModels<CurrentLocationViewModel>()
     private val placesVM by viewModels<PlacesViewModel>()
+    private val saveAddressVM by viewModels<SaveAddressViewModel>()
     private var addressTextField: AutoCompleteTextView? = null
+    private var saveAddressButton: MaterialButton? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,18 +56,13 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setViews(view)
 
         val supportMapFragment = getChildFragmentManager().findFragmentById(R.id.map) as SupportMapFragment
         supportMapFragment.getMapAsync(this)
 
         placesVM.uiPlacesState.observe(viewLifecycleOwner) { onPlacesViewUpdate(it) }
-
-        addressTextField = view.findViewById(R.id.address_input)
-        addressTextField?.addTextChangedListener(object : TextWatcher {
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-            override fun afterTextChanged(s: Editable) { placesVM.findPlaceByText(s.toString()) }
-        })
+        saveAddressVM.formValid.observe(viewLifecycleOwner) { saveAddressButton?.isEnabled = it }
     }
 
     override fun onMapReady(map: GoogleMap) {
@@ -81,6 +81,58 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         permissionRequest.launch(
             arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
         )
+    }
+
+    private fun setViews(view: View) {
+        addressTextField = view.findViewById(R.id.address_input)
+        addressTextField?.addTextChangedListener(object : TextWatcher {
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+            override fun afterTextChanged(s: Editable) {
+                placesVM.findPlaceByText(s.toString())
+            }
+        })
+
+        val placeTypeChipGroup = view.findViewById<ChipGroup>(R.id.place_type_chip_group)
+        placeTypeChipGroup.setOnCheckedStateChangeListener { _, ids ->
+            if (ids.isNotEmpty()) {
+                val type = placeTypeChipGroup.findViewById<Chip>(ids.first())?.text
+                if (type != null) saveAddressVM.placeType.postValue(type.toString())
+            }
+        }
+
+        saveAddressButton = view.findViewById(R.id.save_address_button)
+        saveAddressButton?.setOnClickListener { onSaveAddressClick() }
+    }
+
+    private fun onPlacesViewUpdate(uiState: PlacesViewModel.UIPlacesState) {
+        when (uiState) {
+            is PlacesViewModel.UIPlacesState.ResultOnSearch -> onPlacesFetched(uiState.places)
+            is PlacesViewModel.UIPlacesState.ResultOnCurrentLocation -> onPlaceFetched(uiState.place)
+            is PlacesViewModel.UIPlacesState.Error -> onError(uiState.error)
+            else -> Unit
+        }
+    }
+
+    private fun onPlacesFetched(places: List<Place>) {
+        val suggestAdapter = context?.let { ArrayAdapter(it, android.R.layout.simple_list_item_1, places) }
+        if (suggestAdapter != null) {
+            suggestAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            addressTextField?.setAdapter(suggestAdapter)
+            addressTextField?.setOnItemClickListener { _, _, position, _ ->
+                saveAddressVM.place.postValue(places[position])
+            }
+            suggestAdapter.notifyDataSetChanged()
+        }
+    }
+
+    private fun onPlaceFetched(place: Place) {
+        val text = addressTextField?.editableText
+        if (text != null) {
+            text.clear()
+            text.insert(0, place.toString())
+        }
+        saveAddressVM.place.postValue(place)
     }
 
     private fun onCurrentLocationViewUpdate(uiState: CurrentLocationViewModel.UICurrentLocationState, map: GoogleMap) {
@@ -116,33 +168,13 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         return Geolocation(latitude, longitude)
     }
 
-    private fun onPlacesViewUpdate(uiState: PlacesViewModel.UIPlacesState) {
-        when (uiState) {
-            is PlacesViewModel.UIPlacesState.ResultOnSearch -> onPlacesFetched(uiState.places)
-            is PlacesViewModel.UIPlacesState.ResultOnCurrentLocation -> onPlaceFetched(uiState.place)
-            is PlacesViewModel.UIPlacesState.Error -> onError(uiState.error)
-            else -> Unit
-        }
-    }
-
-    private fun onPlacesFetched(places: List<Place>) {
-        val suggestAdapter = context?.let { ArrayAdapter(it, android.R.layout.simple_list_item_1, places) }
-        if (suggestAdapter != null) {
-            suggestAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            addressTextField?.setAdapter(suggestAdapter)
-            suggestAdapter.notifyDataSetChanged()
-        }
-    }
-
-    private fun onPlaceFetched(place: Place) {
-        val text = addressTextField?.editableText
-        if (text != null) {
-            text.clear()
-            text.insert(0, place.toString())
-        }
-    }
-
     private fun onError(error: String) {
         Toast.makeText(context, "Error: $error", Toast.LENGTH_LONG).show()
+    }
+
+    private fun onSaveAddressClick() {
+        val place = saveAddressVM.place.value
+        val placeType = saveAddressVM.placeType.value
+        Toast.makeText(context, "$place, $placeType", Toast.LENGTH_LONG).show()
     }
 }

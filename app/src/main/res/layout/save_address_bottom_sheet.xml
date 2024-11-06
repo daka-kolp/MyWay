@@ -34,7 +34,6 @@
             android:layout_height="wrap_content"
             android:completionThreshold="3"
             android:maxLines="2" />
-
     </com.google.android.material.textfield.TextInputLayout>
 
     <Space

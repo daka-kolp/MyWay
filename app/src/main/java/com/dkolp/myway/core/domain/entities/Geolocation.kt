@@ -4,6 +4,10 @@ data class Geolocation(
     val latitude: Double,
     val longitude: Double
 ) {
+    companion object {
+        fun nullable() = Geolocation(0.0,0.0)
+    }
+
     override fun toString(): String {
         return "$latitude,$longitude"
     }

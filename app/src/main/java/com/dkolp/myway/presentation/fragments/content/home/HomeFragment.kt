@@ -86,7 +86,10 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     private fun setViews(view: View) {
         addressTextField = view.findViewById(R.id.address_input)
         addressTextField?.addTextChangedListener(object : TextWatcher {
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                val place = saveAddressVM.place.value.toString()
+                if (s.toString() != place) saveAddressVM.place.postValue(Place.nullable())
+            }
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
             override fun afterTextChanged(s: Editable) {
                 placesVM.findPlaceByText(s.toString())

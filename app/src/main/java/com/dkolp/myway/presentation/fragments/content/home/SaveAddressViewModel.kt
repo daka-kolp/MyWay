@@ -11,7 +11,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SaveAddressViewModel @Inject constructor() : ViewModel() {
-    val place: MutableLiveData<Place> by lazy { MutableLiveData<Place>() }
+    val place: MutableLiveData<Place> by lazy { MutableLiveData<Place>(Place.nullable()) }
     val placeType: MutableLiveData<String> by lazy { MutableLiveData<String>() }
 
     @Suppress("UNCHECKED_CAST")
@@ -27,7 +27,7 @@ class SaveAddressViewModel @Inject constructor() : ViewModel() {
             val placeType = placeType.value
             validationConsumer(
                 when {
-                    place != null && !placeType.isNullOrEmpty() -> true
+                    place != Place.nullable() && !placeType.isNullOrEmpty() -> true
                     else -> false
                 }
             )

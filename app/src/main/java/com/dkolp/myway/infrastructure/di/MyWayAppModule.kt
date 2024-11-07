@@ -1,9 +1,11 @@
 package com.dkolp.myway.infrastructure.di
 
 import android.content.Context
+import com.dkolp.myway.core.data.addresses.SupabasePlacesRepository
 import com.dkolp.myway.core.data.map.GoogleMapRepository
-import com.dkolp.myway.core.data.map.api.GoogleApiClient
-import com.dkolp.myway.core.domain.map.MapRepository
+import com.dkolp.myway.core.data.map.GoogleApiClient
+import com.dkolp.myway.core.domain.PlacesRepository
+import com.dkolp.myway.core.domain.MapRepository
 import com.dkolp.myway.infrastructure.utils.SignInProvider
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -15,6 +17,7 @@ import dagger.hilt.components.SingletonComponent
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.auth.Auth
 import io.github.jan.supabase.createSupabaseClient
+import io.github.jan.supabase.postgrest.Postgrest
 import javax.inject.Singleton
 
 @Module
@@ -28,6 +31,7 @@ class MyWayAppModule {
             supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImllYXF1cHZsdGhoZG1ybGZ0YWN1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzAxMjQ3MzEsImV4cCI6MjA0NTcwMDczMX0.OmJ8M5O-8bc4gcrl-oJCvuyUZw0fP245tIS8ECn3kc4"
         ) {
             install(Auth)
+            install(Postgrest)
         }
     }
 
@@ -50,4 +54,8 @@ class MyWayAppModule {
     @Provides
     @Singleton
     fun getMapRepository(client: GoogleApiClient): MapRepository = GoogleMapRepository(client)
+
+    @Provides
+    @Singleton
+    fun getPlacesRepository(supabaseClient: SupabaseClient): PlacesRepository = SupabasePlacesRepository(supabaseClient)
 }

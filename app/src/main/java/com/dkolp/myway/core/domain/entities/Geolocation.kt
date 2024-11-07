@@ -1,4 +1,4 @@
-package com.dkolp.myway.core.domain.map.entities
+package com.dkolp.myway.core.domain.entities
 
 data class Geolocation(
     val latitude: Double,
@@ -13,10 +13,10 @@ data class Geolocation(
     }
 
     fun formatted(): String {
-        return "${latitude.roundTo2Decimals()}, ${longitude.roundTo2Decimals()}"
+        return "${latitude.roundTo6Decimals()}, ${longitude.roundTo6Decimals()}"
     }
 
-    private fun Double.roundTo2Decimals(): String {
-        return String.format("%.3f", this)
+    private fun Double.roundTo6Decimals(): String {
+        return String.format("%.6f", this)
     }
 }

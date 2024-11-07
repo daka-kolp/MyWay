@@ -13,29 +13,29 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.dkolp.myway.R
-import com.dkolp.myway.core.domain.map.entities.Place
-import com.dkolp.myway.presentation.fragments.content.save_address.SaveAddressFragment
+import com.dkolp.myway.core.domain.entities.Place
+import com.dkolp.myway.presentation.fragments.content.save_address.SavePlaceFragment
 import com.google.android.material.button.MaterialButton
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class AddressesFragment : Fragment() {
-    private val addressesVM by viewModels<AddressesViewModel>()
+class PlacesFragment : Fragment() {
+    private val placesVM by viewModels<PlaceViewModel>()
     private lateinit var recyclerView: RecyclerView
     private lateinit var swipeContainer: SwipeRefreshLayout
     private lateinit var textNoAddresses: TextView
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        return inflater.inflate(R.layout.fragment_addresses, container, false)
+        return inflater.inflate(R.layout.fragment_places, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        getAddresses()
+        getPlaces()
 
         swipeContainer = view.findViewById(R.id.refreshAddress)
-        swipeContainer.setOnRefreshListener { getAddresses() }
+        swipeContainer.setOnRefreshListener { getPlaces() }
 
         recyclerView = view.findViewById(R.id.addresses_recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(view.context)
@@ -45,38 +45,38 @@ class AddressesFragment : Fragment() {
         val addNewAddressButton = view.findViewById<MaterialButton>(R.id.add_new_address_button)
         addNewAddressButton.setOnClickListener { addNewAddress() }
 
-        addressesVM.uiAddressesState.observe(viewLifecycleOwner) { onAddressesViewUpdate(it) }
+        placesVM.uiAddressesState.observe(viewLifecycleOwner) { onPlacesViewUpdate(it) }
     }
 
-    private fun getAddresses() {
-        addressesVM.getAddresses()
+    private fun getPlaces() {
+        placesVM.getPlaces()
     }
 
     private fun addNewAddress() {
         parentFragmentManager
             .beginTransaction()
-            .add(R.id.container, SaveAddressFragment())
+            .add(R.id.container, SavePlaceFragment())
             .addToBackStack("AddressesFragment")
             .commit()
     }
 
-    private fun onAddressesViewUpdate(uiState: AddressesViewModel.UIAddressesState) {
+    private fun onPlacesViewUpdate(uiState: PlaceViewModel.UIAddressesState) {
         swipeContainer.isRefreshing = false
-        textNoAddresses.isVisible = uiState is AddressesViewModel.UIAddressesState.Empty
+        textNoAddresses.isVisible = uiState is PlaceViewModel.UIAddressesState.Empty
 
         when (uiState) {
-            is AddressesViewModel.UIAddressesState.Result -> onAddressFetched(uiState.places)
-            is AddressesViewModel.UIAddressesState.Error -> onAddressFetchedError(uiState.error)
+            is PlaceViewModel.UIAddressesState.Result -> onPlacesFetched(uiState.places)
+            is PlaceViewModel.UIAddressesState.Error -> onPlacesFetchedError(uiState.error)
             else -> Unit
         }
     }
 
-    private fun onAddressFetched(places: List<Place>) {
-        val adapter = AddressesRecycleViewAdapter(places)
+    private fun onPlacesFetched(places: List<Place>) {
+        val adapter = PlacesRecycleViewAdapter(places)
         recyclerView.adapter = adapter
     }
 
-    private fun onAddressFetchedError(error: String) {
+    private fun onPlacesFetchedError(error: String) {
         Toast.makeText(context, "Error, the app can not fetch addresses: $error", Toast.LENGTH_LONG).show()
     }
 }

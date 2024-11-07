@@ -1,7 +1,7 @@
-package com.dkolp.myway.core.data.map.api
+package com.dkolp.myway.core.data.map
 
-import com.dkolp.myway.core.data.map.api.dto.CandidatesDto
-import com.dkolp.myway.core.data.map.api.dto.PlacesDto
+import com.dkolp.myway.core.data.map.dto.CandidatesDto
+import com.dkolp.myway.core.data.map.dto.AddressesDto
 import okhttp3.OkHttpClient
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -25,7 +25,7 @@ const val apiKey = "AIzaSyCDuFkfLEUe-l7vyaFOU4r5D7FJFqjSA_4"
 
 interface GoogleApiService {
     @GET("place/findplacefromtext/json")
-    suspend fun findPlaceByText(
+    suspend fun findAddressesByText(
         @Query("input") text: String,
         @Query("fields") fields: String = "formatted_address,name,geometry",
         @Query("inputtype") type: String = "textquery",
@@ -33,8 +33,8 @@ interface GoogleApiService {
     ): Response<CandidatesDto>
 
     @GET("geocode/json")
-    suspend fun findPlaceByLatLng(
+    suspend fun findAddressesByLatLng(
         @Query("latlng") latLng: String,
         @Query("key") key: String = apiKey
-    ): Response<PlacesDto>
+    ): Response<AddressesDto>
 }

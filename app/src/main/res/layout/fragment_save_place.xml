@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.fragments.content.save_address.SaveAddressFragment">
+    tools:context=".presentation.fragments.content.save_address.SavePlaceFragment">
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/map"
@@ -23,7 +23,7 @@
         app:icon="@drawable/back" />
 
     <include
-        layout="@layout/save_address_bottom_sheet"
+        layout="@layout/save_place_bottom_sheet"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom" />

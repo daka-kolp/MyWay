@@ -18,8 +18,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.dkolp.myway.R
-import com.dkolp.myway.core.domain.map.entities.Geolocation
-import com.dkolp.myway.core.domain.map.entities.Place
+import com.dkolp.myway.core.domain.entities.Geolocation
+import com.dkolp.myway.core.domain.entities.Address
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -35,12 +35,12 @@ import com.google.android.material.chip.ChipGroup
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SaveAddressFragment : Fragment(), OnMapReadyCallback {
+class SavePlaceFragment : Fragment(), OnMapReadyCallback {
     private val locationVM by viewModels<CurrentLocationViewModel>()
-    private val placesVM by viewModels<PlacesViewModel>()
-    private val saveAddressVM by viewModels<SaveAddressViewModel>()
-    private var addressTextField: AutoCompleteTextView? = null
-    private var saveAddressButton: MaterialButton? = null
+    private val addressesVM by viewModels<AddressesViewModel>()
+    private val savePlaceVM by viewModels<SavePlaceViewModel>()
+    private lateinit var addressTextField: AutoCompleteTextView
+    private lateinit var savePlaceButton: MaterialButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,7 +52,7 @@ class SaveAddressFragment : Fragment(), OnMapReadyCallback {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.fragment_save_address, container, false)
+        return inflater.inflate(R.layout.fragment_save_place, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -62,8 +62,9 @@ class SaveAddressFragment : Fragment(), OnMapReadyCallback {
         val supportMapFragment = getChildFragmentManager().findFragmentById(R.id.map) as SupportMapFragment
         supportMapFragment.getMapAsync(this)
 
-        placesVM.uiPlacesState.observe(viewLifecycleOwner) { onPlacesViewUpdate(it) }
-        saveAddressVM.formValid.observe(viewLifecycleOwner) { saveAddressButton?.isEnabled = it }
+        addressesVM.uiAddressesState.observe(viewLifecycleOwner) { onPlacesViewUpdate(it) }
+        savePlaceVM.formValid.observe(viewLifecycleOwner) { savePlaceButton.isEnabled = it }
+        savePlaceVM.uiSaveAddressState.observe(viewLifecycleOwner) { onAddressSaved(it) }
     }
 
     override fun onMapReady(map: GoogleMap) {
@@ -86,17 +87,17 @@ class SaveAddressFragment : Fragment(), OnMapReadyCallback {
 
     private fun setViews(view: View) {
         val backButton = view.findViewById<Button>(R.id.back_button)
-        backButton.setOnClickListener { activity?.onBackPressedDispatcher?.onBackPressed()}
+        backButton.setOnClickListener { activity?.onBackPressedDispatcher?.onBackPressed() }
 
         addressTextField = view.findViewById(R.id.address_input)
-        addressTextField?.addTextChangedListener(object : TextWatcher {
+        addressTextField.addTextChangedListener(object : TextWatcher {
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                val place = saveAddressVM.place.value.toString()
-                if (s.toString() != place) saveAddressVM.place.postValue(Place.nullable())
+                val place = savePlaceVM.address.value.toString()
+                if (s.toString() != place) savePlaceVM.address.postValue(Address.nullable())
             }
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
             override fun afterTextChanged(s: Editable) {
-                placesVM.findPlaceByText(s.toString())
+                addressesVM.findAddressesByText(s.toString())
             }
         })
 
@@ -104,42 +105,42 @@ class SaveAddressFragment : Fragment(), OnMapReadyCallback {
         placeTypeChipGroup.setOnCheckedStateChangeListener { _, ids ->
             if (ids.isNotEmpty()) {
                 val type = placeTypeChipGroup.findViewById<Chip>(ids.first())?.text
-                if (type != null) saveAddressVM.placeType.postValue(type.toString())
+                if (type != null) savePlaceVM.placeType.postValue(type.toString())
             }
         }
 
-        saveAddressButton = view.findViewById(R.id.save_address_button)
-        saveAddressButton?.setOnClickListener { onSaveAddressClick() }
+        savePlaceButton = view.findViewById(R.id.save_place_button)
+        savePlaceButton.setOnClickListener { onSaveAddressClick() }
     }
 
-    private fun onPlacesViewUpdate(uiState: PlacesViewModel.UIPlacesState) {
+    private fun onPlacesViewUpdate(uiState: AddressesViewModel.UIAddressesState) {
         when (uiState) {
-            is PlacesViewModel.UIPlacesState.ResultOnSearch -> onPlacesFetched(uiState.places)
-            is PlacesViewModel.UIPlacesState.ResultOnCurrentLocation -> onPlaceFetched(uiState.place)
-            is PlacesViewModel.UIPlacesState.Error -> onError(uiState.error)
+            is AddressesViewModel.UIAddressesState.ResultOnSearch -> onAddressesFetched(uiState.addresses)
+            is AddressesViewModel.UIAddressesState.ResultOnCurrentLocation -> onAddressFetched(uiState.address)
+            is AddressesViewModel.UIAddressesState.Error -> onError(uiState.error)
             else -> Unit
         }
     }
 
-    private fun onPlacesFetched(places: List<Place>) {
-        val suggestAdapter = context?.let { ArrayAdapter(it, android.R.layout.simple_list_item_1, places) }
+    private fun onAddressesFetched(addresses: List<Address>) {
+        val suggestAdapter = context?.let { ArrayAdapter(it, android.R.layout.simple_list_item_1, addresses) }
         if (suggestAdapter != null) {
             suggestAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            addressTextField?.setAdapter(suggestAdapter)
-            addressTextField?.setOnItemClickListener { _, _, position, _ ->
-                saveAddressVM.place.postValue(places[position])
+            addressTextField.setAdapter(suggestAdapter)
+            addressTextField.setOnItemClickListener { _, _, position, _ ->
+                savePlaceVM.address.postValue(addresses[position])
             }
             suggestAdapter.notifyDataSetChanged()
         }
     }
 
-    private fun onPlaceFetched(place: Place) {
-        val text = addressTextField?.editableText
+    private fun onAddressFetched(address: Address) {
+        val text = addressTextField.editableText
         if (text != null) {
             text.clear()
-            text.insert(0, place.toString())
+            text.insert(0, address.toString())
         }
-        saveAddressVM.place.postValue(place)
+        savePlaceVM.address.postValue(address)
     }
 
     private fun onCurrentLocationViewUpdate(uiState: CurrentLocationViewModel.UICurrentLocationState, map: GoogleMap) {
@@ -157,7 +158,19 @@ class SaveAddressFragment : Fragment(), OnMapReadyCallback {
         map.addMarker(options)
         map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 14.5F))
 
-        placesVM.findPlaceByGeolocation(currentLocation.geolocationFromLocation())
+        addressesVM.findAddressByGeolocation(currentLocation.geolocationFromLocation())
+    }
+
+    private fun onAddressSaved(uiState: SavePlaceViewModel.UISavePlaceState) {
+        when (uiState) {
+            is SavePlaceViewModel.UISavePlaceState.Success -> onAddressSavedSuccessfully()
+            is SavePlaceViewModel.UISavePlaceState.Error -> onError(uiState.error)
+            else -> Unit
+        }
+    }
+
+    private fun onAddressSavedSuccessfully() {
+        Toast.makeText(context, "The place has been saved successfully", Toast.LENGTH_LONG).show()
     }
 
     private fun Location.latLngFromLocation(): LatLng {
@@ -180,8 +193,6 @@ class SaveAddressFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun onSaveAddressClick() {
-        val place = saveAddressVM.place.value
-        val placeType = saveAddressVM.placeType.value
-        Toast.makeText(context, "$place, $placeType", Toast.LENGTH_LONG).show()
+        savePlaceVM.saveAddress { activity?.onBackPressedDispatcher?.onBackPressed() }
     }
 }

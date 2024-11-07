@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/surface"
-        tools:context=".presentation.fragments.content.addresses.AddressesFragment">
+        tools:context=".presentation.fragments.content.addresses.PlacesFragment">
 
         <TextView
             android:id="@+id/no_addresses"

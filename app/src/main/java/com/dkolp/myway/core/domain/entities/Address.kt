@@ -1,11 +1,11 @@
-package com.dkolp.myway.core.domain.map.entities
+package com.dkolp.myway.core.domain.entities
 
-data class Place(
+data class Address(
     val address: String,
     val geolocation: Geolocation,
 ) {
     companion object {
-        fun nullable() = Place("", Geolocation.nullable())
+        fun nullable() = Address("", Geolocation.nullable())
     }
 
     override fun toString(): String { return address }

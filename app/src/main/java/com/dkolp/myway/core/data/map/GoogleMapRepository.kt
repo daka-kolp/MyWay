@@ -1,10 +1,10 @@
-package com.dkolp.myway.core.data
+package com.dkolp.myway.core.data.map
 
-import com.dkolp.myway.core.data.api.GoogleApiClient
-import com.dkolp.myway.core.data.api.GoogleApiService
-import com.dkolp.myway.core.domain.MapRepository
-import com.dkolp.myway.core.domain.entities.Geolocation
-import com.dkolp.myway.core.domain.entities.Place
+import com.dkolp.myway.core.data.map.api.GoogleApiClient
+import com.dkolp.myway.core.data.map.api.GoogleApiService
+import com.dkolp.myway.core.domain.map.MapRepository
+import com.dkolp.myway.core.domain.map.entities.Geolocation
+import com.dkolp.myway.core.domain.map.entities.Place
 
 class GoogleMapRepository(private val client: GoogleApiClient) : MapRepository {
     private val service: GoogleApiService

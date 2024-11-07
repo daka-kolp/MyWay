@@ -4,9 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.dkolp.myway.core.domain.MapRepository
-import com.dkolp.myway.core.domain.entities.Geolocation
-import com.dkolp.myway.core.domain.entities.Place
+import com.dkolp.myway.core.domain.map.MapRepository
+import com.dkolp.myway.core.domain.map.entities.Geolocation
+import com.dkolp.myway.core.domain.map.entities.Place
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

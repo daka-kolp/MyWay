@@ -1,4 +1,4 @@
-package com.dkolp.myway.core.domain.entities
+package com.dkolp.myway.core.domain.map.entities
 
 data class Place(
     val address: String,

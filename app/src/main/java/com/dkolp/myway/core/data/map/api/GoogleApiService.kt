@@ -1,7 +1,7 @@
-package com.dkolp.myway.core.data.api
+package com.dkolp.myway.core.data.map.api
 
-import com.dkolp.myway.core.data.api.dto.CandidatesDto
-import com.dkolp.myway.core.data.api.dto.PlacesDto
+import com.dkolp.myway.core.data.map.api.dto.CandidatesDto
+import com.dkolp.myway.core.data.map.api.dto.PlacesDto
 import okhttp3.OkHttpClient
 import retrofit2.Response
 import retrofit2.Retrofit

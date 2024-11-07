@@ -5,7 +5,7 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
-import com.dkolp.myway.core.domain.entities.Place
+import com.dkolp.myway.core.domain.map.entities.Place
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

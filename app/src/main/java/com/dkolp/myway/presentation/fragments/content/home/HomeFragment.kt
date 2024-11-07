@@ -17,8 +17,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.dkolp.myway.R
-import com.dkolp.myway.core.domain.entities.Geolocation
-import com.dkolp.myway.core.domain.entities.Place
+import com.dkolp.myway.core.domain.map.entities.Geolocation
+import com.dkolp.myway.core.domain.map.entities.Place
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback

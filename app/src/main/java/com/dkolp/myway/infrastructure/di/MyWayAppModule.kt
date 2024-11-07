@@ -1,9 +1,9 @@
 package com.dkolp.myway.infrastructure.di
 
 import android.content.Context
-import com.dkolp.myway.core.data.GoogleMapRepository
-import com.dkolp.myway.core.data.api.GoogleApiClient
-import com.dkolp.myway.core.domain.MapRepository
+import com.dkolp.myway.core.data.map.GoogleMapRepository
+import com.dkolp.myway.core.data.map.api.GoogleApiClient
+import com.dkolp.myway.core.domain.map.MapRepository
 import com.dkolp.myway.infrastructure.utils.SignInProvider
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices

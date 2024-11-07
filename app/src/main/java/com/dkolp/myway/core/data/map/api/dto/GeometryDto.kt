@@ -1,4 +1,4 @@
-package com.dkolp.myway.core.data.api.dto
+package com.dkolp.myway.core.data.map.api.dto
 
 data class GeometryDto(val location: LocationDto)
 

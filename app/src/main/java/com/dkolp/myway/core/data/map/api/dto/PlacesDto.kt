@@ -1,7 +1,7 @@
-package com.dkolp.myway.core.data.api.dto
+package com.dkolp.myway.core.data.map.api.dto
 
-import com.dkolp.myway.core.domain.entities.Geolocation
-import com.dkolp.myway.core.domain.entities.Place
+import com.dkolp.myway.core.domain.map.entities.Geolocation
+import com.dkolp.myway.core.domain.map.entities.Place
 import com.google.gson.annotations.SerializedName
 
 data class CandidatesDto(val candidates: List<PlaceDto>)

@@ -10,4 +10,6 @@
     <string name="office">Office</string>
     <string name="others">Others</string>
     <string name="loading">Loading…</string>
+    <string name="no_addresses">No addresses</string>
+    <string name="add_a_new_address">Add a new address</string>
 </resources>

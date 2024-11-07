@@ -1,4 +1,4 @@
-package com.dkolp.myway.presentation.fragments.content.home
+package com.dkolp.myway.presentation.fragments.content.save_address
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData

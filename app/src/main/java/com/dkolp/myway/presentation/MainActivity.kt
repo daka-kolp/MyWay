@@ -17,7 +17,7 @@ import com.dkolp.myway.R
 import com.dkolp.myway.presentation.fragments.auth.AuthFragment
 import com.dkolp.myway.presentation.fragments.auth.AuthViewModel
 import com.dkolp.myway.presentation.fragments.EmptyFragment
-import com.dkolp.myway.presentation.fragments.content.home.HomeFragment
+import com.dkolp.myway.presentation.fragments.content.addresses.AddressesFragment
 import com.dkolp.myway.presentation.helpers.OnAuthLaunch
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -77,7 +77,7 @@ class MainActivity : AppCompatActivity(), OnAuthLaunch {
 
     private fun showContent() {
         supportFragmentManager.beginTransaction()
-            .replace(R.id.container, HomeFragment())
+            .replace(R.id.container, AddressesFragment())
             .commit()
     }
 

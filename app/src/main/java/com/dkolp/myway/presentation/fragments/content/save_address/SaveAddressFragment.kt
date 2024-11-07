@@ -1,4 +1,4 @@
-package com.dkolp.myway.presentation.fragments.content.home
+package com.dkolp.myway.presentation.fragments.content.save_address
 
 import android.Manifest
 import android.graphics.Bitmap
@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
+import android.widget.Button
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
@@ -34,7 +35,7 @@ import com.google.android.material.chip.ChipGroup
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class HomeFragment : Fragment(), OnMapReadyCallback {
+class SaveAddressFragment : Fragment(), OnMapReadyCallback {
     private val locationVM by viewModels<CurrentLocationViewModel>()
     private val placesVM by viewModels<PlacesViewModel>()
     private val saveAddressVM by viewModels<SaveAddressViewModel>()
@@ -51,7 +52,7 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.fragment_home, container, false)
+        return inflater.inflate(R.layout.fragment_save_address, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -84,6 +85,9 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun setViews(view: View) {
+        val backButton = view.findViewById<Button>(R.id.back_button)
+        backButton.setOnClickListener { activity?.onBackPressedDispatcher?.onBackPressed()}
+
         addressTextField = view.findViewById(R.id.address_input)
         addressTextField?.addTextChangedListener(object : TextWatcher {
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {

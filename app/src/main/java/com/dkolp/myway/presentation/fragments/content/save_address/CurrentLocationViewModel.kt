@@ -1,4 +1,4 @@
-package com.dkolp.myway.presentation.fragments.content.home
+package com.dkolp.myway.presentation.fragments.content.save_address
 
 import android.annotation.SuppressLint
 import android.location.Location

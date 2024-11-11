@@ -1,6 +1,5 @@
 package com.dkolp.myway.presentation.fragments.content.addresses
 
-import androidx.fragment.app.viewModels
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.isVisible
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -20,7 +20,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class PlacesFragment : Fragment() {
-    private val placesVM by viewModels<PlaceViewModel>()
+    private lateinit var placesVM: PlacesViewModel
     private lateinit var recyclerView: RecyclerView
     private lateinit var swipeContainer: SwipeRefreshLayout
     private lateinit var textNoAddresses: TextView
@@ -32,6 +32,7 @@ class PlacesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        placesVM = ViewModelProvider(requireActivity())[PlacesViewModel::class.java]
         getPlaces()
 
         swipeContainer = view.findViewById(R.id.refreshAddress)
@@ -45,7 +46,7 @@ class PlacesFragment : Fragment() {
         val addNewAddressButton = view.findViewById<MaterialButton>(R.id.add_new_address_button)
         addNewAddressButton.setOnClickListener { addNewAddress() }
 
-        placesVM.uiAddressesState.observe(viewLifecycleOwner) { onPlacesViewUpdate(it) }
+        placesVM.uiPlacesState.observe(viewLifecycleOwner) { onPlacesViewUpdate(it) }
     }
 
     private fun getPlaces() {
@@ -60,13 +61,13 @@ class PlacesFragment : Fragment() {
             .commit()
     }
 
-    private fun onPlacesViewUpdate(uiState: PlaceViewModel.UIAddressesState) {
+    private fun onPlacesViewUpdate(uiState: PlacesViewModel.UIPlacesState) {
         swipeContainer.isRefreshing = false
-        textNoAddresses.isVisible = uiState is PlaceViewModel.UIAddressesState.Empty
+        textNoAddresses.isVisible = uiState is PlacesViewModel.UIPlacesState.Empty
 
         when (uiState) {
-            is PlaceViewModel.UIAddressesState.Result -> onPlacesFetched(uiState.places)
-            is PlaceViewModel.UIAddressesState.Error -> onPlacesFetchedError(uiState.error)
+            is PlacesViewModel.UIPlacesState.Result -> onPlacesFetched(uiState.places)
+            is PlacesViewModel.UIPlacesState.Error -> onPlacesFetchedError(uiState.error)
             else -> Unit
         }
     }

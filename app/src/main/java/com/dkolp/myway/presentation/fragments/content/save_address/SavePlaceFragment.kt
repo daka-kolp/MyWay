@@ -17,9 +17,11 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import com.dkolp.myway.R
 import com.dkolp.myway.core.domain.entities.Geolocation
 import com.dkolp.myway.core.domain.entities.Address
+import com.dkolp.myway.presentation.fragments.content.addresses.PlacesViewModel
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -39,6 +41,7 @@ class SavePlaceFragment : Fragment(), OnMapReadyCallback {
     private val locationVM by viewModels<CurrentLocationViewModel>()
     private val addressesVM by viewModels<AddressesViewModel>()
     private val savePlaceVM by viewModels<SavePlaceViewModel>()
+    private lateinit var placesVM: PlacesViewModel
     private lateinit var addressTextField: AutoCompleteTextView
     private lateinit var savePlaceButton: MaterialButton
 
@@ -57,6 +60,8 @@ class SavePlaceFragment : Fragment(), OnMapReadyCallback {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        placesVM = ViewModelProvider(requireActivity())[PlacesViewModel::class.java]
+
         setViews(view)
 
         val supportMapFragment = getChildFragmentManager().findFragmentById(R.id.map) as SupportMapFragment
@@ -193,6 +198,9 @@ class SavePlaceFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun onSaveAddressClick() {
-        savePlaceVM.saveAddress { activity?.onBackPressedDispatcher?.onBackPressed() }
+        savePlaceVM.saveAddress { newPlace ->
+            placesVM.addPlace(newPlace)
+            activity?.onBackPressedDispatcher?.onBackPressed()
+        }
     }
 }

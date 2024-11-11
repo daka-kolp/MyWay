@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.dkolp.myway.core.domain.PlacesRepository
 import com.dkolp.myway.core.domain.entities.Address
+import com.dkolp.myway.core.domain.entities.Place
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -21,7 +22,7 @@ class SavePlaceViewModel @Inject constructor(private val repository: PlacesRepos
     private val _state = MutableLiveData<UISavePlaceState>(UISavePlaceState.Initial)
     val uiSaveAddressState: LiveData<UISavePlaceState> = _state
 
-    fun saveAddress(onSuccess: () -> Unit) {
+    fun saveAddress(onSuccess: (newPlace: Place) -> Unit) {
         _state.value = UISavePlaceState.Processing
         viewModelScope.launch {
             withContext(Dispatchers.Main) {
@@ -30,9 +31,10 @@ class SavePlaceViewModel @Inject constructor(private val repository: PlacesRepos
                 try {
                     val address = address.value
                     val placeType = placeType.value
-                    if(address != null && !placeType.isNullOrEmpty()) {
-                        repository.savePlace(address, placeType)
-                        onSuccess()
+                    if (address != null && !placeType.isNullOrEmpty()) {
+                        val place = Place(placeType, address)
+                        repository.savePlace(place)
+                        onSuccess(place)
                         value = UISavePlaceState.Success
                     } else {
                         value = UISavePlaceState.Error("Data is null")

@@ -118,7 +118,7 @@ class SavePlaceFragment : Fragment(), OnMapReadyCallback {
     private fun onPlacesViewUpdate(uiState: AddressesViewModel.UIAddressesState) {
         when (uiState) {
             is AddressesViewModel.UIAddressesState.ResultOnSearch -> onAddressesFetched(uiState.addresses)
-            is AddressesViewModel.UIAddressesState.ResultOnCurrentLocation -> onAddressFetched(uiState.address)
+            is AddressesViewModel.UIAddressesState.ResultOnLocation -> onAddressFetched(uiState.address)
             is AddressesViewModel.UIAddressesState.Error -> onError(uiState.error)
             else -> Unit
         }

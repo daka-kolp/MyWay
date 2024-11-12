@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/my_way_bottom_sheet_shape"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/route_details"
+        android:textFontWeight="700"
+        android:textSize="24sp" />
+
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="8dp" />
+
+    <TextView
+        android:id="@+id/destination_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="..." />
+
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="8dp" />
+
+    <TextView
+        android:id="@+id/route_distance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="..." />
+</LinearLayout>

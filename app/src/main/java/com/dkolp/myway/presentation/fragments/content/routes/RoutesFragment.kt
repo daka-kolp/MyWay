@@ -8,11 +8,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
 import com.dkolp.myway.R
+import com.dkolp.myway.core.domain.entities.Address
 import com.dkolp.myway.core.domain.entities.Route
+import com.dkolp.myway.presentation.fragments.content.save_address.AddressesViewModel
 import com.dkolp.myway.presentation.fragments.content.save_address.CurrentLocationViewModel
 import com.dkolp.myway.presentation.helpers.geolocationFromLatLng
 import com.dkolp.myway.presentation.helpers.geolocationFromLocation
@@ -35,6 +38,10 @@ import dagger.hilt.android.AndroidEntryPoint
 class RoutesFragment : Fragment(), OnMapReadyCallback {
     private val locationVM by viewModels<CurrentLocationViewModel>()
     private val routesVM by viewModels<RoutesViewModel>()
+    private val addressesVM by viewModels<AddressesViewModel>()
+    private lateinit var textDestinationAddress: TextView
+    private lateinit var textDistance: TextView
+
     private var polyline: Polyline? = null
     private var marker: Marker? = null
 
@@ -52,6 +59,11 @@ class RoutesFragment : Fragment(), OnMapReadyCallback {
 
         val supportMapFragment = getChildFragmentManager().findFragmentById(R.id.routes_map) as SupportMapFragment
         supportMapFragment.getMapAsync(this)
+
+        textDestinationAddress = view.findViewById(R.id.destination_address)
+        textDistance = view.findViewById(R.id.route_distance)
+
+        addressesVM.uiAddressesState.observe(viewLifecycleOwner) { onPlacesViewUpdate(it) }
     }
 
     override fun onMapReady(map: GoogleMap) {
@@ -100,6 +112,7 @@ class RoutesFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun onRouteFetched(route: Route, map: GoogleMap) {
+        textDistance.text = route.getFormattedDistance()
         polyline?.remove()
         val decodedPath = PolyUtil.decode(route.points)
         val options = PolylineOptions().color(Color.GRAY)
@@ -112,8 +125,21 @@ class RoutesFragment : Fragment(), OnMapReadyCallback {
 
     private fun setMarker(latLng: LatLng, map: GoogleMap) {
         marker?.remove()
-        routesVM.getRoutes(latLng.geolocationFromLatLng())
+        val location = latLng.geolocationFromLatLng()
+        addressesVM.findAddressByGeolocation(location)
+        routesVM.getRoutes(location)
         val options = MarkerOptions().icon(getPointerIcon(resources)).position(latLng).draggable(true)
         marker = map.addMarker(options)
+    }
+
+    private fun onPlacesViewUpdate(uiState: AddressesViewModel.UIAddressesState) {
+        when (uiState) {
+            is AddressesViewModel.UIAddressesState.ResultOnLocation -> onAddressFetched(uiState.address)
+            else -> Unit
+        }
+    }
+
+    private fun onAddressFetched(address: Address) {
+        textDestinationAddress.text = address.address
     }
 }

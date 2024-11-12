@@ -45,7 +45,7 @@ class AddressesViewModel @Inject constructor(private val repository: MapReposito
                 try {
                     val result = repository.findAddressesByGeolocation(geolocation)
                     value = if (result.isNotEmpty()) {
-                        UIAddressesState.ResultOnCurrentLocation(result.first())
+                        UIAddressesState.ResultOnLocation(result.first())
                     } else {
                         UIAddressesState.Error("MyWay can't find any address by your location")
                     }
@@ -62,7 +62,7 @@ class AddressesViewModel @Inject constructor(private val repository: MapReposito
         data object Empty : UIAddressesState()
         data object Processing : UIAddressesState()
         class ResultOnSearch(val addresses: List<Address>) : UIAddressesState()
-        class ResultOnCurrentLocation(val address: Address) : UIAddressesState()
+        class ResultOnLocation(val address: Address) : UIAddressesState()
         class Error(val error: String) : UIAddressesState()
     }
 }

@@ -6,11 +6,4 @@ data class Route(val points: String, val distanceInMeters: Int, val timeInMinute
         val meters = distanceInMeters % 1000
         return "${km}km ${meters}m"
     }
-
-    fun getFormattedTime(): String {
-        val hours = timeInMinutes / 3600
-        val minutes = timeInMinutes % 3600 / 60
-        if (hours == 0) return "${minutes}min"
-        return "${hours}h ${minutes}min"
-    }
 }

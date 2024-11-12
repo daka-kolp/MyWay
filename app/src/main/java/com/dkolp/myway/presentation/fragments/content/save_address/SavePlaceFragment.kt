@@ -1,8 +1,6 @@
 package com.dkolp.myway.presentation.fragments.content.save_address
 
 import android.Manifest
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.location.Location
 import android.os.Bundle
 import android.text.Editable
@@ -19,16 +17,15 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.dkolp.myway.R
-import com.dkolp.myway.core.domain.entities.Geolocation
 import com.dkolp.myway.core.domain.entities.Address
 import com.dkolp.myway.presentation.fragments.content.addresses.PlacesViewModel
+import com.dkolp.myway.presentation.helpers.geolocationFromLocation
+import com.dkolp.myway.presentation.helpers.getPointerIcon
+import com.dkolp.myway.presentation.helpers.latLngFromLocation
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.BitmapDescriptor
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.button.MaterialButton
@@ -159,7 +156,7 @@ class SavePlaceFragment : Fragment(), OnMapReadyCallback {
     private fun onCurrentLocationFetched(currentLocation: Location, map: GoogleMap) {
         map.clear()
         val latLng = currentLocation.latLngFromLocation()
-        val options = MarkerOptions().icon(getUserIcon()).position(latLng)
+        val options = MarkerOptions().icon(getPointerIcon(resources)).position(latLng)
         map.addMarker(options)
         map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 14.5F))
 
@@ -176,21 +173,6 @@ class SavePlaceFragment : Fragment(), OnMapReadyCallback {
 
     private fun onAddressSavedSuccessfully() {
         Toast.makeText(context, "The place has been saved successfully", Toast.LENGTH_LONG).show()
-    }
-
-    private fun Location.latLngFromLocation(): LatLng {
-        return LatLng(latitude, longitude)
-    }
-
-    private fun getUserIcon(): BitmapDescriptor {
-        val size = 124
-        val bitmap = BitmapFactory.decodeResource(resources, R.drawable.location_pin)
-        val marker = Bitmap.createScaledBitmap(bitmap, size, size, false)
-        return BitmapDescriptorFactory.fromBitmap(marker)
-    }
-
-    private fun Location.geolocationFromLocation(): Geolocation {
-        return Geolocation(latitude, longitude)
     }
 
     private fun onError(error: String) {

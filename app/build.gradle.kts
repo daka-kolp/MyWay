@@ -67,4 +67,5 @@ dependencies {
     implementation(libs.adapter.rxjava2)
     implementation(libs.converter.gson)
     implementation(libs.gson)
+    implementation(libs.android.maps.utils)
 }

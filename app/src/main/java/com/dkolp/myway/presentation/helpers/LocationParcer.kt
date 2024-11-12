@@ -11,3 +11,7 @@ fun Location.latLngFromLocation(): LatLng {
 fun Location.geolocationFromLocation(): Geolocation {
     return Geolocation(latitude, longitude)
 }
+
+fun LatLng.geolocationFromLatLng(): Geolocation {
+    return Geolocation(latitude, longitude)
+}

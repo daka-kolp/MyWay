@@ -2,6 +2,7 @@ package com.dkolp.myway.core.data.map
 
 import com.dkolp.myway.core.data.map.dto.CandidatesDto
 import com.dkolp.myway.core.data.map.dto.AddressesDto
+import com.dkolp.myway.core.data.map.dto.RoutesDto
 import okhttp3.OkHttpClient
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -37,4 +38,11 @@ interface GoogleApiService {
         @Query("latlng") latLng: String,
         @Query("key") key: String = apiKey
     ): Response<AddressesDto>
+
+    @GET("directions/json")
+    suspend fun getRoutes(
+        @Query("origin") origin: String,
+        @Query("destination") destination: String,
+        @Query("key") key: String = apiKey
+    ): Response<RoutesDto>
 }

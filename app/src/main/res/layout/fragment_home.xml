@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/surface"
+    android:padding="24dp"
+    tools:context=".presentation.fragments.content.addresses.PlacesFragment">
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/addresses"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:text="@string/addresses"
+        android:textSize="18sp" />
+
+    <Space
+        android:id="@+id/home_space"
+        android:layout_width="match_parent"
+        android:layout_height="24dp"
+        android:layout_below="@id/addresses" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/routes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/home_space"
+        android:text="@string/routes"
+        android:textSize="18sp" />
+</RelativeLayout>

@@ -17,7 +17,7 @@ import com.dkolp.myway.R
 import com.dkolp.myway.presentation.fragments.auth.AuthFragment
 import com.dkolp.myway.presentation.fragments.auth.AuthViewModel
 import com.dkolp.myway.presentation.fragments.EmptyFragment
-import com.dkolp.myway.presentation.fragments.content.addresses.PlacesFragment
+import com.dkolp.myway.presentation.fragments.content.HomeFragment
 import com.dkolp.myway.presentation.helpers.OnAuthLaunch
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -63,22 +63,15 @@ class MainActivity : AppCompatActivity(), OnAuthLaunch {
     }
 
     private fun showEmptyContent() {
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.container, EmptyFragment())
-            .commit()
+        supportFragmentManager.beginTransaction().replace(R.id.container, EmptyFragment()).commit()
     }
 
     private fun showAuth() {
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.container, AuthFragment())
-            .commit()
+        supportFragmentManager.beginTransaction().replace(R.id.container, AuthFragment()).commit()
     }
 
-
     private fun showContent() {
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.container, PlacesFragment())
-            .commit()
+        supportFragmentManager.beginTransaction().replace(R.id.container, HomeFragment()).commit()
     }
 
     private fun showError(error: AuthViewModel.UIAuthState.Error) {
